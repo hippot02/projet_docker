@@ -65,20 +65,7 @@ docker compose down
 
 Un fichier `.env` est utilisé à la racine du projet :
 
-```env
-# PostgreSQL
-POSTGRES_DB=mydb
-POSTGRES_USER=myuser
-POSTGRES_PASSWORD=mypassword
-POSTGRES_PORT=5432
-POSTGRES_VERSION=17
-
-# Spring API
-SERVER_PORT=
-
-# Webapp
-WEBAPP_PORT=
-```
+Adapter le .env.example pour faire fonctionner l'app
 
 ---
 
