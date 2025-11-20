@@ -3,3 +3,4 @@
 *.iml
 .mvn/
 .DS_Store
+.env
