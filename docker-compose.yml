@@ -1,6 +1,6 @@
 services:
 
-  proxy:
+  reverse-proxy:
     image: nginx:stable-alpine
     container_name: proxy
     volumes:

@@ -3,6 +3,10 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
+# Argument de build pour l'API URL
+ARG VITE_API_BASE_URL=""
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
 # Copier les fichiers de dépendances
 COPY package.json package-lock.json* ./
 
