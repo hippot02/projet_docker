@@ -1,4 +1,15 @@
 services:
+  reverse-proxy:
+    build: ./reverse-proxy
+    container_name: reverse-proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - spring-api
+      - webapp
+    networks:
+      - public
+
   spring-api:
     build: ./spring-api
     container_name: spring-api
@@ -6,8 +17,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:${POSTGRES_PORT}/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - db
     networks:
@@ -15,10 +24,11 @@ services:
       - public
 
   webapp:
-    build: ./webapp
+    build:
+      context: ./webapp
+      args:
+        VITE_API_BASE_URL: "http://localhost"
     container_name: webapp
-    ports:
-      - "${WEBAPP_PORT}:${WEBAPP_PORT}"
     networks:
       - public
 
