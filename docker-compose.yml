@@ -2,9 +2,9 @@ services:
 
   reverse-proxy:
     image: nginx:stable-alpine
-    container_name: proxy
+    container_name: reverse-proxy
     volumes:
-      - ./proxy/nginx.conf.template:/etc/nginx/templates/nginx.conf.template:ro
+      - ./reverse-proxy/nginx.conf.template:/etc/nginx/templates/nginx.conf.template:ro
     ports:
       - "${PROXY_PORT}:${PROXY_PORT}"
     environment:
