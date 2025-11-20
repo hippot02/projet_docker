@@ -1,4 +1,29 @@
 services:
+
+  proxy:
+    image: nginx:stable-alpine
+    container_name: proxy
+    volumes:
+      - ./proxy/nginx.conf.template:/etc/nginx/templates/nginx.conf.template:ro
+    ports:
+      - "${PROXY_PORT}:${PROXY_PORT}"
+    environment:
+      API_ROUTE: ${API_ROUTE}
+      API_PORT: ${API_PORT}
+      WEBAPP_PORT: ${WEBAPP_PORT}
+      PROXY_PORT: ${PROXY_PORT}
+    entrypoint: >
+      sh -c "envsubst '$${API_ROUTE} $${API_PORT} $${WEBAPP_PORT} $${PROXY_PORT}' 
+      < /etc/nginx/templates/nginx.conf.template 
+      > /etc/nginx/conf.d/default.conf 
+      && nginx -g 'daemon off;'"
+    depends_on:
+      - spring-api
+      - webapp
+    networks:
+      - public
+      - backend
+
   spring-api:
     build: ./spring-api
     container_name: spring-api
@@ -6,19 +31,17 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:${POSTGRES_PORT}/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - db
     networks:
       - backend
-      - public
 
   webapp:
-    build: ./webapp
+    build:
+      context: ./webapp
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
     container_name: webapp
-    ports:
-      - "${WEBAPP_PORT}:${WEBAPP_PORT}"
     networks:
       - public
 

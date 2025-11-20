@@ -12,6 +12,10 @@ RUN npm ci
 # Copier le code source
 COPY . .
 
+# Définir la variable d'environnement Vite au moment du build
+ARG VITE_API_BASE_URL=""
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
 # Build
 RUN npm run build
 

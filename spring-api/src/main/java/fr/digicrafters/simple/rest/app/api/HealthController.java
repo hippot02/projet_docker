@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
 public class HealthController {
     private static final Logger log = LoggerFactory.getLogger(HealthController.class);
