@@ -29,6 +29,17 @@ L’objectif est de conteneuriser chaque service, les orchestrer avec **Docker C
 
 ---
 
+## Environnement
+
+<p></p>
+
+Un fichier `.env` est à ajouter à la racine du projet, (cf [.env-exemple](./.env-exemple))
+Toute variable sensible (mot de passe, clé secrète, version, etc.) doit être stockée dans ce fichier.
+
+
+```env
+---
+
 ## Tests et validation
 
 <p></p>

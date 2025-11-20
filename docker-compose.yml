@@ -3,25 +3,40 @@ services:
     build: ./spring-api
     container_name: spring-api
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:${POSTGRES_PORT}/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - db
+    networks:
+      - backend
+      - public
+
+  webapp:
+    build: ./webapp
+    container_name: webapp
+    ports:
+      - "${WEBAPP_PORT}:${WEBAPP_PORT}"
+    networks:
+      - public
 
   db:
-    image: postgres:17
+    image: postgres:${POSTGRES_VERSION}
     container_name: postgres-db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
 
 volumes:
   postgres_data:
+
+networks:
+  public:
+  backend:
