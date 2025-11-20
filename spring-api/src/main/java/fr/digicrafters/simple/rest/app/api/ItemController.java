@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/items")
 public class ItemController {
     private static final Logger log = LoggerFactory.getLogger(ItemController.class);

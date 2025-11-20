@@ -1,0 +1,26 @@
+server {
+  listen ${PROXY_PORT};
+  server_name _;
+
+  # ========= BACKEND ==========
+  # Toute requête commençant par /api sera redirigée vers Spring Boot
+  location ${API_ROUTE}/ {
+    proxy_pass         http://spring-api:${API_PORT}${API_ROUTE}/;
+    proxy_http_version 1.1;
+    proxy_set_header   Host $host;
+    proxy_set_header   X-Real-IP $remote_addr;
+    proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+  }
+
+  # ========= FRONTEND ==========
+  # Toute autre requête va vers le serveur webapp
+  location / {
+    proxy_pass         http://webapp:${WEBAPP_PORT}/;
+    proxy_http_version 1.1;
+    proxy_set_header   Host $host;
+    proxy_set_header   X-Real-IP $remote_addr;
+    proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+  }
+}
